@@ -1,7 +1,7 @@
 import { Operation } from 'express-openapi';
 import cors from 'cors';
 import * as fs from 'fs';
-
+import bcrypt from 'bcrypt';
 // Appends to test.txt
 
 function postObjToFile(test: string) {
@@ -35,7 +35,16 @@ export const POST: Operation = [
     const body = req.body;
     const JSONstring = JSON.stringify(body, null, 2);
     postObjToFile(JSONstring);
-
+    //hash and salted password test, probably not the best place to do it here, just tried for testing
+    const JSONparsed = JSON.parse(JSONstring);
+    bcrypt
+      .hash(JSONparsed.password, 10)
+      .then((hash) => {
+        console.log('password', JSONparsed.password, '\nhashed password', hash);
+      })
+      .catch((error) => {
+        console.log('Error hashing password:', error);
+      });
     res.status(200).send(body);
   },
 ];
