@@ -35,6 +35,7 @@ export const POST: Operation = [
     const body = req.body;
     const JSONstring = JSON.stringify(body, null, 2);
     postObjToFile(JSONstring);
+
     res.status(200).send(body);
   },
 ];
